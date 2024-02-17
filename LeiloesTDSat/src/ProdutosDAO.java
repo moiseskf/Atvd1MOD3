@@ -49,7 +49,44 @@ public class ProdutosDAO {
         try {
             PreparedStatement stmt = this.conn.prepareStatement(sql);
 
-            
+            ResultSet rs = stmt.executeQuery();
+
+            ArrayList<ProdutosDTO> listaProduts = new ArrayList<>();
+
+            while (rs.next()) {
+                ProdutosDTO produtos = new ProdutosDTO();
+
+                produtos.setId(rs.getInt("id"));
+                produtos.setNome(rs.getString("nome"));
+                produtos.setStatus(rs.getString("status"));
+                produtos.setValor(rs.getInt("valor"));
+                listaProduts.add(produtos);
+
+            }
+
+            return listaProduts;
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public void venderProduto(int id) {
+        try {
+            String sql = "UPDATE produtos SET status = \"vendido\" WHERE id LIKE " + id;
+            prep = conn.prepareStatement(sql);
+            prep.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("Erro ao conectar: " + ex.getMessage());
+
+        }
+    }
+
+    public ArrayList<ProdutosDTO> listarProdutosVendidos() {
+        String sql = "SELECT * FROM produtos where status LIKE \"vendido\" ";
+
+        try {
+            PreparedStatement stmt = this.conn.prepareStatement(sql);
 
             ResultSet rs = stmt.executeQuery();
 
@@ -72,4 +109,5 @@ public class ProdutosDAO {
             return null;
         }
     }
-    }
+
+}

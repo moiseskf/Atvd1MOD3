@@ -72,4 +72,16 @@ public class ProdutosDAO {
             return null;
         }
     }
+    
+    public void venderProduto(int id){
+        try{
+        String sql = "UPDATE produtos SET status = \"vendido\" WHERE id LIKE "+ id; 
+        prep = conn.prepareStatement(sql);
+         prep.executeUpdate();
+        }
+        catch (SQLException ex) {
+            System.out.println("Erro ao conectar: " + ex.getMessage());
+            
+        }
+    }
     }
